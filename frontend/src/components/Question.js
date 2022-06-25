@@ -13,43 +13,6 @@ class Question extends Component {
     this.setState({ visibleAnswer: !this.state.visibleAnswer });
   }
 
-  // render() {
-  //   const { question, answer, category, difficulty } = this.props;
-  //   return (
-  //     <div className="Question-holder">
-  //       <div className="Question">{question}</div>
-  //       <div className="Question-status">
-  //         <img
-  //           className="category"
-  //           alt={`${category.toLowerCase()}`}
-  //           src={`${category.toLowerCase()}.svg`}
-  //         />
-  //         <div className="difficulty">Difficulty: {difficulty}</div>
-  //         <img
-  //           src="delete.png"
-  //           alt="delete"
-  //           className="delete"
-  //           onClick={() => this.props.questionAction("DELETE")}
-  //         />
-  //       </div>
-  //       <div
-  //         className="show-answer button"
-  //         onClick={() => this.flipVisibility()}
-  //       >
-  //         {this.state.visibleAnswer ? "Hide" : "Show"} Answer
-  //       </div>
-  //       <div className="answer-holder">
-  //         <span
-  //           style={{
-  //             visibility: this.state.visibleAnswer ? "visible" : "hidden",
-  //           }}
-  //         >
-  //           Answer: {answer}
-  //         </span>
-  //       </div>
-  //     </div>
-  //   );
-  // }
   render() {
     const { question, answer, category, difficulty } = this.props;
     return (
@@ -58,8 +21,8 @@ class Question extends Component {
         <div className="Question-status">
           <img
             className="category"
-            alt={`{category.toLowerCase()}`}
-            src={`art.svg`}
+            alt={`${category.toLowerCase()}`}
+            src={`${category.toLowerCase()}.svg`}
           />
           <div className="difficulty">Difficulty: {difficulty}</div>
           <img
