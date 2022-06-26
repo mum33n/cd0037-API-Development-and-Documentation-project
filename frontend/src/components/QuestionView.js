@@ -128,7 +128,7 @@ class QuestionView extends Component {
 
   render() {
     return (
-      <div className="question-view">
+      <div className="flex gap-3 md:flex-row flex-col">
         <div className="categories-list">
           <h2
             onClick={() => {
@@ -147,9 +147,9 @@ class QuestionView extends Component {
               >
                 {this.state.categories[id]}
                 <img
-                  className="category"
+                  className="category inline-block"
                   alt={`${this.state.categories[id].toLowerCase()}`}
-                  src={`${this.state.categories[id].toLowerCase()}.svg`}
+                  src={`art.svg`}
                 />
               </li>
             ))}

@@ -52,14 +52,13 @@ def create_app(test_config=None):
     def getCategeories():
         data = Category.query.order_by(Category.id).all()
         formated = [category.format() for category in data]
-        paginated = paginate(request, formated, QUESTIONS_PER_PAGE)
         result = {}
-        for i in paginated:
+        for i in formated:
             result[i['id']] = i['type']
         return jsonify({
             'success': True,
             'categories': result,
-            'pages': math.ceil(len(formated)/QUESTIONS_PER_PAGE)
+            'total': len(formated)
         })
 
     """
@@ -173,7 +172,7 @@ def create_app(test_config=None):
     categories in the left column will cause only questions of that
     category to be shown.
     """
-    @app.route('/categories/<category_id>/questions')
+    @app.route('/categories/<int:category_id>/questions')
     def getQuestion(category_id):
         questions = Question.query.filter(
             Question.category == category_id).all()

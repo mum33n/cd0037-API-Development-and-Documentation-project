@@ -12,7 +12,6 @@ class Question extends Component {
   flipVisibility() {
     this.setState({ visibleAnswer: !this.state.visibleAnswer });
   }
-
   render() {
     const { question, answer, category, difficulty } = this.props;
     return (
@@ -33,7 +32,7 @@ class Question extends Component {
           />
         </div>
         <div
-          className="show-answer button"
+          className="bg-blue-500 w-auto inline-block px-5 py-2 text-white rounded shadow-lg mt-4 cursor-pointer hover:shadow-xl hover:bg-blue-600"
           onClick={() => this.flipVisibility()}
         >
           {this.state.visibleAnswer ? "Hide" : "Show"} Answer
