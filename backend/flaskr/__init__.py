@@ -112,7 +112,8 @@ def create_app(test_config=None):
         else:
             question.delete()
             return jsonify({
-                "success": True
+                "success": True,
+                "deleted_id": question_id
             })
     """
     @TODO:
@@ -133,7 +134,7 @@ def create_app(test_config=None):
         difficulty = data.get('difficulty', None)
         category = data.get('category', None)
         try:
-            if search_term:
+            if search_term and (type(search_term) == type('')):
                 data = Question.query.filter(
                     Question.question.ilike(f'%{search_term}%')).all()
                 formated = [question.format() for question in data]
@@ -200,19 +201,23 @@ def create_app(test_config=None):
     @app.route('/quizzes', methods=['POST'])
     def getQuizzez():
         body = request.get_json()
-        try:
-            previous_questions = body.get('previous_questions', [])
-            new_questions = Question.query.filter(
-                (Question.id).notin_(previous_questions)).all()
-            length = len(new_questions)
-            new_index = random.randint(0, length)
-            formated = [item.format() for item in new_questions]
-            return jsonify({
-                'success': True,
-                'question': formated[new_index]
-            })
-        except:
-            abort(404)
+        previous_questions = body.get('previous_questions', [])
+        if type(previous_questions) == type([]):
+            try:
+                new_questions = Question.query.filter(
+                    (Question.id).notin_(previous_questions)).all()
+                length = len(new_questions)
+                new_index = random.randint(0,
+                                           length)
+                formated = [item.format() for item in new_questions]
+                return jsonify({
+                    'success': True,
+                    'question': formated[new_index]
+                })
+            except:
+                abort(404)
+        else:
+            abort(405)
 
     """
     @TODO:
@@ -236,11 +241,59 @@ def create_app(test_config=None):
         }), 422
 
     @app.errorhandler(405)
-    def unprocessable(error):
+    def not_allowed(error):
         return jsonify({
             'success': False,
             'error': 405,
             'message': 'method not allowed'
         }), 405
+
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({
+            'success': False,
+            'error': 500,
+            'message': 'internal server error'
+        }), 500
+
+    @app.errorhandler(502)
+    def bad_gateway(error):
+        return jsonify({
+            'success': False,
+            'error': 502,
+            'message': 'bad gateway'
+        }), 502
+
+    @app.errorhandler(501)
+    def not_implemented(error):
+        return jsonify({
+            'success': False,
+            'error': 501,
+            'message': 'not implemented'
+        }), 501
+
+    @app.errorhandler(503)
+    def service_unavailable(error):
+        return jsonify({
+            'success': False,
+            'error': 503,
+            'message': 'service unavaailable'
+        }), 503
+
+    @app.errorhandler(504)
+    def not_implemented(error):
+        return jsonify({
+            'success': False,
+            'error': 504,
+            'message': 'gateway timeout'
+        }), 504
+
+    @app.errorhandler(505)
+    def not_supported(error):
+        return jsonify({
+            'success': False,
+            'error': 505,
+            'message': 'http version not supported'
+        }), 501
 
     return app
